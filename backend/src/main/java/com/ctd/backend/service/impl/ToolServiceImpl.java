@@ -26,6 +26,12 @@ public class ToolServiceImpl implements ToolService {
     public Optional<Tool> getToolById(Long id) {
         return toolRepository.findById(id);
     }
+
+    @Override
+    public Optional<Tool> getToolByName(String name) {
+        return toolRepository.findByName(name);
+    }
+
     //Ver luego
     @Override
     public List<Tool> getToolsByCategory(Category id) {
