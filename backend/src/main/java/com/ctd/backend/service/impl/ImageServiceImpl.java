@@ -4,7 +4,6 @@ import com.ctd.backend.model.Image;
 import com.ctd.backend.repository.ImageRepository;
 import com.ctd.backend.service.ImageService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service

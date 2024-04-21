@@ -6,6 +6,7 @@ import com.ctd.backend.model.Tool;
 import com.ctd.backend.repository.ToolRepository;
 import com.ctd.backend.service.impl.CategoryServiceImpl;
 import com.ctd.backend.service.impl.ToolServiceImpl;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.Optional;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/tools")
+@Tag(name = "Tools", description = "CRUD of tool entity")
 public class ToolController {
 
     private final ToolServiceImpl toolService;
@@ -70,13 +72,12 @@ public class ToolController {
     /* Delete */
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteTool(@PathVariable Long id) throws ResourceNotFoundException {
-        Optional<Tool> toolRequired = toolService.getToolById(id);
-        if(toolRequired.isPresent()) {
-            toolService.deleteToolById(id);
-            return ResponseEntity.ok("The tool was successfully removed");
-        } else {
-            throw new ResourceNotFoundException("The tool with the given ID wasn't found");
-        }
+        return toolService.getToolById(id)
+                .map(tool -> {
+                    toolService.deleteToolById(id);
+                    return ResponseEntity.ok("The tool was successfully removed");
+                })
+                .orElseThrow(() -> new ResourceNotFoundException("The tool with the given ID wasn't found"));
     }
 
     /* Update */

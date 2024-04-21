@@ -41,7 +41,24 @@ public class CategoryController {
     /* Create */
     @PostMapping("/create")
     public ResponseEntity<Category> createCategory(@RequestBody Category category) throws DuplicatedValueException {
-        return null;
+        Optional<Category> categoryRequired = categoryService.findCategoryById(category.getId());
+        if(categoryRequired.isPresent()) {
+            throw  new DuplicatedValueException("There's already a category with that name");
+        } else {
+            return ResponseEntity.ok(categoryService.saveCategory(category));
+        }
     }
+
+    /* Delete */
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteCategory(@PathVariable Long id) throws ResourceNotFoundException {
+        return categoryService.findCategoryById(id)
+                .map(category -> {
+                    categoryService.deleteCategory(id);
+                    return ResponseEntity.ok("The category was successfully removed");
+                })
+                .orElseThrow(() -> new ResourceNotFoundException("The category with the given ID wasn't found"));
+    }
+
 
 }

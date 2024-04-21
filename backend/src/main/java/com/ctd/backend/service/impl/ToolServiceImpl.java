@@ -1,6 +1,7 @@
 package com.ctd.backend.service.impl;
 
 import com.ctd.backend.model.Category;
+import com.ctd.backend.model.Image;
 import com.ctd.backend.model.Tool;
 import com.ctd.backend.repository.ToolRepository;
 import com.ctd.backend.service.ToolService;
@@ -40,6 +41,10 @@ public class ToolServiceImpl implements ToolService {
 
     @Override
     public Tool saveTool(Tool tool) {
+        // Ver luego
+        for (Image image : tool.getImage()) {
+            image.setTool(tool);
+        }
         return toolRepository.save(tool);
     }
 
